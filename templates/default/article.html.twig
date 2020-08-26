@@ -1,18 +1,21 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Article{% endblock %}
+{% block title %}{{ post.title }}{% endblock %}
 
 {% block content %}
 
     <div class="p-3 mx-auto text-center">
-        <h1 class="display-4">Titre article</h1>
+        <h1 class="display-4">{{ post.title }}</h1>
     </div>
 
     <div class="py-5 bg-light">
         <div class="container">
             <div class="row">
-                <aside class="col-md-6">IMAGE</aside>
-                <article class="col-md-6">CONTENU</article>
+                <aside class="col-md-6">
+                    <img src="https://via.placeholder.com/1024x960"
+                                             class="card-img-top" alt="{{ post.title }}">
+                </aside>
+                <article class="col-md-6">{{ post.content | raw }}</article>
             </div>
         </div>
     </div>
