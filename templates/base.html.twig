@@ -19,6 +19,11 @@
     <div class="row">
         <div class="col">
             {% include 'components/_nav.html.twig' %}
+            {% for message in app.flashes('notice') %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
             {% block content %}{% endblock %}
             {% include 'components/_footer.html.twig' %}
         </div>

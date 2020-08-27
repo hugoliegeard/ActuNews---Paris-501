@@ -12,7 +12,7 @@
         <div class="container">
             <div class="row">
                 <aside class="col-md-6">
-                    <img src="https://via.placeholder.com/1024x960"
+                    <img src="{{ asset('uploads/posts/' ~ post.image ) }}"
                                              class="card-img-top" alt="{{ post.title }}">
                 </aside>
                 <article class="col-md-6">{{ post.content | raw }}</article>
