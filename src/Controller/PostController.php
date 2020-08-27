@@ -13,7 +13,10 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * Class PostController
@@ -26,8 +29,11 @@ class PostController extends AbstractController
     /**
      * Formulaire pour rédiger un article
      * @Route("/nouveau", name="post_new", methods={"GET|POST"})
+     * @param Request $request
+     * @param SluggerInterface $slugger
+     * @return Response
      */
-    public function newPost()
+    public function newPost(Request $request, SluggerInterface $slugger)
     {
 
         # Créer un nouvel objet Post
@@ -42,13 +48,15 @@ class PostController extends AbstractController
         # Affectation du User à l'article
         $post->setUser($user);
 
+        dump($post);
+
         # Création du Formulaire
         $form = $this->createFormBuilder($post)
 
             ->add('title', TextType::class, [
                 'label' => false,
                 'attr' => [
-                    'placeholder' => 'TItre de l\'article'
+                    'placeholder' => 'Titre de l\'article'
                 ]
             ])
 
@@ -71,11 +79,31 @@ class PostController extends AbstractController
 
             ->add('submit', SubmitType::class, [
                 'label' => 'Publier mon article',
+                'attr' => [
+                    'class' => 'btn-block btn-dark'
+                ]
             ])
 
-            ->getForm()
+            ->getForm();
 
-        ;
+        # Permet à Symfony de traiter les données reçus.
+        $form->handleRequest($request);
+
+        # Vérifier si le formulaire est soumis
+        # Vérifier si les données sont valides
+        if($form->isSubmitted() && $form->isValid()) {
+
+            # Génération de l'Alias
+            $post->setAlias(
+              $slugger->slug(
+                  $post->getTitle()
+              )
+            );
+
+            dd($post);
+            # Enclencher la sauvegarde des données
+
+        }
 
         # Transmission du formulaire à la vue
         return $this->render('post/new.html.twig', [
