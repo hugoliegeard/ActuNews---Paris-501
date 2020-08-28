@@ -14,5 +14,17 @@
             <a class="nav-link" href="{{ path('default_category', { 'alias' : 'culture' }) }}">Culture</a>
             <a class="nav-link" href="{{ path('default_category', { 'alias' : 'loisirs' }) }}">Loisirs</a>
         </div>
+        <div class="navbar-nav ml-auto">
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                {% if is_granted('ROLE_JOURNALIST') %}
+                    <a class="nav-link" href="{{ path('post_new') }}">Rédiger un Article</a>
+                    <a class="nav-link" href="#">Mes Articles</a>
+                {% endif %}
+                <a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
+            {% else %}
+                <a class="nav-link" href="{{ path('app_login') }}">Connexion</a>
+                <a class="nav-link" href="{{ path('user_register') }}">Inscription</a>
+            {% endif %}
+        </div>
     </div>
 </nav>

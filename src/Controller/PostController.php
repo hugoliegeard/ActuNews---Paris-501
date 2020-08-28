@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Entity\Post;
 use App\Entity\User;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -30,6 +31,7 @@ class PostController extends AbstractController
 
     /**
      * Formulaire pour rédiger un article
+     * @IsGranted("ROLE_JOURNALIST")
      * @Route("/nouveau", name="post_new", methods={"GET|POST"})
      * @param Request $request
      * @param SluggerInterface $slugger
